@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% block main %}
+<div class="fade-in-up">
+    <div class="mb-5 text-center">
+        <h2 class="fw-bold text-dark">Discover Strategic Funding Operations</h2>
+        <p class="text-muted mx-auto" style="max-width: 600px;">Review verified international entry points, global admissions pathways, and programmatic parameters.</p>
+    </div>
+
+    <div class="row g-4">
+        {% for blog in blogs %}
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 border-0 shadow-sm overflow-hidden bg-white rounded-3">
+                    {% if blog.cover_image_path %}
+                        <img src="{{ blog.cover_image_path }}" class="card-img-top" style="height: 180px; object-fit: cover;" alt="Banner">
+                    {% else %}
+                        <div class="bg-secondary opacity-10" style="height: 180px;"></div>
+                    {% endif %}
+                    <div class="card-body p-4 d-flex flex-column">
+                        <span class="text-xs text-uppercase font-monospace text-primary tracking-wider d-block mb-1">{{ blog.country }}</span>
+                        <h5 class="card-title fw-bold text-dark">{{ blog.title }}</h5>
+                        <p class="text-muted small flex-grow-1">{{ blog.description }}</p>
+                        <div class="mt-3 pt-3 border-top d-flex justify-content-between align-items-center">
+                            <span class="text-secondary small font-monospace">Closes: {{ blog.deadline_date if blog.deadline_date else 'Continuous' }}</span>
+                            <a href="/scholarships/{{ blog.id }}" class="btn btn-sm btn-uni px-3">Explore Track</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-12 text-center py-5">
+                <p class="text-muted">No external opportunities mapped to this console sector at this moment.</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

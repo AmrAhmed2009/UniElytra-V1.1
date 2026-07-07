@@ -1,0 +1,94 @@
+{% extends "layout.html" %}
+{% block main %}
+<div class="fade-in-up">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold text-dark m-0">Platform Administration Control Panel</h2>
+            <p class="text-muted small">System monitoring and editorial controls managed by Amr Ahmed Fawzi.</p>
+        </div>
+        <a href="/admin/create-blog" class="btn btn-uni px-4 py-2.5">Publish New Funding Track</a>
+    </div>
+
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm p-4 bg-white rounded-3">
+                <span class="text-uppercase text-secondary small fw-bold tracking-wider d-block mb-1">Total Connections Volume</span>
+                <h3 class="fw-bold text-dark m-0">{{ total_hits }}</h3>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm p-4 bg-white rounded-3">
+                <span class="text-uppercase text-secondary small fw-bold tracking-wider d-block mb-1">Active Monthly Velocity</span>
+                <h3 class="fw-bold text-primary m-0">{{ monthly_hits }}</h3>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm p-4 bg-white rounded-3">
+                <span class="text-uppercase text-secondary small fw-bold tracking-wider d-block mb-1">Registered Academic Consoles</span>
+                <h3 class="fw-bold text-success m-0">{{ student_count }}</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-5">
+        <div class="col-lg-7">
+            <div class="card border-0 shadow-sm p-4 bg-white rounded-3 h-100">
+                <h5 class="fw-bold text-dark mb-4">System Traffic Configurations</h5>
+                <canvas id="trafficChartGrid" height="220"></canvas>
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="card border-0 shadow-sm p-4 bg-white rounded-3 h-100">
+                <h5 class="fw-bold text-dark mb-3">Published Opportunities Ecosystem</h5>
+                <div class="list-group list-group-flush overflow-auto" style="max-height: 280px;">
+                    {% for blog in blog_list %}
+                        <div class="list-group-item px-0 py-3 bg-transparent d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="fw-bold m-0 text-dark">{{ blog.title }}</h6>
+                                <span class="text-muted small font-monospace">{{ blog.country }}</span>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <a href="/admin/edit-blog/{{ blog.id }}" class="btn btn-sm btn-light border px-2.5">Modify</a>
+                                <form action="/admin/delete-blog/{{ blog.id }}" method="post" onsubmit="return confirm('Confirm complete removal of this track?');">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger px-2.5">Purge</button>
+                                </form>
+                            </div>
+                        </div>
+                    {% else %}
+                        <p class="text-muted small py-4 m-0 text-center">No editorial records active in system memory.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('trafficChartGrid').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [{% for row in chart_data %}'{{ row.visit_date }}',{% endfor %}],
+            datasets: [{
+                label: 'Unique Structural Hits',
+                data: [{% for row in chart_data %}{{ row.counts }},{% endfor %}],
+                borderColor: '#4A2E80',
+                backgroundColor: 'rgba(74, 46, 128, 0.05)',
+                borderWidth: 2.5,
+                tension: 0.2,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { beginAtZero: true, grid: { color: '#F1F5F9' } },
+                x: { grid: { display: false } }
+            }
+        }
+    });
+</script>
+{% endblock %}

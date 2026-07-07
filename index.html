@@ -1,0 +1,136 @@
+{% extends "layout.html" %}
+{% block main %}
+<div class="row mb-4 fade-in-up">
+    <div class="col-md-12">
+        <div class="bg-uni-gradient text-white p-5 rounded-4 shadow-sm position-relative overflow-hidden">
+            <h1 class="fw-bold display-6">Welcome to Your Dashboard</h1>
+            <p class="mb-0 opacity-75 max-width-600">Track your university applications, manage your test scores, and keep an eye on important deadlines all in one place.</p>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4 fade-in-up">
+    <div class="col-md-4 mb-3">
+        <div class="card card-hover-engage p-4 bg-white h-100 border-purple-accent">
+            <h5 class="fw-bold text-dark">💡 Admissions Tip</h5>
+            <p class="small text-muted mb-0">When applying for competitive scholarships like Stipendium Hungaricum or HBKU, start your motivation letters early. Clearly focus your responses on how your goals match the program.</p>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card card-hover-engage p-4 bg-white h-100 border-purple-accent">
+            <h5 class="fw-bold text-dark">💬 Student Quote</h5>
+            <p class="small text-muted mb-0">"Tracking everything in one dashboard helped me stay on top of deadlines and reach my target scores without feeling overwhelmed by late-submission anxiety."</p>
+            <span class="d-block mt-2 font-monospace small text-end fw-bold" style="color: var(--uni-purple);">— STEM Student</span>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card card-hover-engage p-4 bg-white h-100 border-purple-accent">
+            <h5 class="fw-bold text-dark">🎓 About UniElytra</h5>
+            <p class="small text-muted mb-0">UniElytra helps you stay completely organized by bringing your application updates and standardized test profiles together in one clear panel.</p>
+        </div>
+    </div>
+</div>
+
+<div class="row fade-in-up">
+    <div class="col-lg-8 mb-4">
+        <div class="card p-4 h-100 bg-white">
+            <h4 class="fw-bold mb-4 text-dark d-flex align-items-center justify-content-between">
+                <span>📋 My Applications</span>
+                {% if apps %}<a href="/add-application" class="btn btn-uni btn-sm rounded-pill px-3">+ Add Application</a>{% endif %}
+            </h4>
+
+            {% if apps %}
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle border-0">
+                        <thead>
+                            <tr class="text-muted small uppercase">
+                                <th class="border-0">Institution</th>
+                                <th class="border-0">Program / Degree</th>
+                                <th class="border-0">Scholarship</th>
+                                <th class="border-0">Deadline</th>
+                                <th class="border-0">Status</th>
+                                <th class="border-0 text-end">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for app in apps %}
+                                <tr>
+                                    <td class="fw-bold text-dark">{{ app.institution }}</td>
+                                    <td><span class="badge bg-purple-light text-dark border-0">{{ app.program }}</span></td>
+                                    <td><span class="text-secondary small">{{ app.scholarship_name if app.scholarship_name else 'Standard Profile' }}</span></td>
+                                    <td class="fw-semibold small" style="color: var(--uni-purple);">{{ app.deadline }}</td>
+                                    <td>
+                                        <span class="badge rounded-pill px-3 py-1.5
+                                            {% if app.status == 'Accepted' %}badge-accepted
+                                            {% elif app.status == 'Submitted' %}badge-submitted
+                                            {% elif app.status == 'Rejected' %}badge-rejected
+                                            {% else %}badge-pending{% endif %}">
+                                            {{ app.status }}
+                                        </span>
+                                    </td>
+                                    <td class="text-end">
+                                        <form action="/delete/applications/{{ app.id }}" method="post" class="d-inline m-0">
+                                            <button type="submit" class="btn btn-sm btn-light text-dark rounded-circle border">✕</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="text-center my-5 py-5">
+                    <div class="mb-3 display-4">✈️</div>
+                    <h5 class="fw-bold text-dark">No Applications Added Yet</h5>
+                    <p class="text-muted small max-width-400 mx-auto mb-4">Your application list is empty. Add your target universities to start tracking your deadlines easily.</p>
+                    <a href="/add-application" class="btn btn-uni btn-sm rounded-pill px-4 py-2">+ Add Your First Application</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="col-lg-4 mb-4">
+        <div class="card p-4 h-100 bg-white">
+            <h4 class="fw-bold mb-4 text-dark d-flex align-items-center justify-content-between">
+                <span>🚀 Test Scores</span>
+                {% if scores %}<a href="/add-test" class="btn btn-outline-uni btn-sm rounded-pill px-3">+ Add Test</a>{% endif %}
+            </h4>
+
+            {% if scores %}
+                {% for score in scores %}
+                    <div class="border rounded-4 p-3 mb-3 bg-light position-relative card-hover-engage">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h5 class="mb-0 fw-bold" style="color: var(--uni-purple);">{{ score.test_type }}</h5>
+                            <form action="/delete/test_scores/{{ score.id }}" method="post" class="m-0">
+                                <button type="submit" class="btn-close" style="font-size: 0.75rem;" aria-label="Remove"></button>
+                            </form>
+                        </div>
+                        <div class="row text-center mt-2">
+                            <div class="col-6 border-end">
+                                <span class="d-block text-muted small" style="font-size: 10px; text-transform: uppercase;">Target Score</span>
+                                <span class="fs-4 fw-bold text-dark">{{ score.target_score }}</span>
+                            </div>
+                            <div class="col-6">
+                                <span class="d-block text-muted small" style="font-size: 10px; text-transform: uppercase;">Highest Score</span>
+                                <span class="fs-4 fw-bold" style="color: var(--uni-purple);">{{ score.current_score if score.current_score else '---' }}</span>
+                            </div>
+                        </div>
+                        {% if score.test_date %}
+                            <div class="mt-2 pt-2 border-top text-center">
+                                <span class="text-muted" style="font-size: 12px;">📅 Test Date: <strong>{{ score.test_date }}</strong></span>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="text-center my-5 py-5">
+                    <div class="mb-3 display-4">📈</div>
+                    <h5 class="fw-bold text-dark">No Test Scores Added Yet</h5>
+                    <p class="text-muted small mb-4">Add your target and current milestones for exams like the SAT or IELTS to keep your goals in sight.</p>
+                    <a href="/add-test" class="btn btn-outline-uni btn-sm rounded-pill px-4">+ Add a Test Score</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

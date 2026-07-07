@@ -1,0 +1,82 @@
+{% extends "layout.html" %}
+{% block main %}
+<div class="row justify-content-center fade-in-up">
+    <div class="col-md-6">
+        <div class="card p-5 bg-white shadow-sm">
+            <div class="d-flex align-items-center mb-3">
+                <a href="/" class="btn btn-sm btn-light border rounded-circle me-3">←</a>
+                <h3 class="fw-bold m-0 text-dark">Track New Flight Path</h3>
+            </div>
+            <p class="text-muted small mb-4">Log institutional targets, specify funding requirements, and map critical milestones.</p>
+            <hr class="mb-4">
+
+            <form action="/add-application" method="post">
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Institution / University Target</label>
+                    <input type="text" name="institution" class="form-control px-3 py-2 rounded-3" placeholder="e.g., Hamad Bin Khalifa University" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Degree Program Tier</label>
+                    <select id="degreeSelect" name="degree_program" class="form-select px-3 py-2 rounded-3" onchange="toggleCustomDegreeInput()" required>
+                        <option value="" disabled selected>Select educational degree target...</option>
+                        <option value="Bachelor of Science (B.Sc.)">Bachelor of Science (B.Sc.)</option>
+                        <option value="Bachelor of Engineering (B.Eng.)">Bachelor of Engineering (B.Eng.)</option>
+                        <option value="Bachelor of Arts (B.A.)">Bachelor of Arts (B.A.)</option>
+                        <option value="Master of Science (M.Sc.)">Master of Science (M.Sc.)</option>
+                        <option value="Doctor of Philosophy (Ph.D.)">Doctor of Philosophy (Ph.D.)</option>
+                        <option value="Other">Other / Custom Track</option>
+                    </select>
+                </div>
+
+                <!-- Hidden Input Field for Custom Degree Programs via UX Toggles -->
+                <div class="mb-3 d-none animate-fade" id="customDegreeContainer">
+                    <label class="form-label fw-semibold text-purple" style="color: var(--uni-purple);">Specify Scholarship / Degree Variant</label>
+                    <input type="text" id="customDegreeInput" name="custom_degree" class="form-control px-3 py-2 rounded-3 border-purple" placeholder="e.g., Dual-Degree B.Sc./M.Sc. Program">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Scholarship Allocation Vector</label>
+                    <input type="text" name="scholarship" class="form-control px-3 py-2 rounded-3" placeholder="e.g., Stipendium Hungaricum Fully Funded Track">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Official Closing Submission Deadline</label>
+                    <!-- Calendar Extended Bounds Mapping 2016 through 2036 -->
+                    <input type="date" name="deadline" class="form-control px-3 py-2 rounded-3" min="2016-01-01" max="2036-12-31" required>
+                    <div class="form-text text-muted" style="font-size: 11px;">Calendar parameters extended across an active 20-year tracking loop.</div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Active Submission Pipeline Status</label>
+                    <select name="status" class="form-select px-3 py-2 rounded-3">
+                        <option value="In Progress" selected>In Progress</option>
+                        <option value="Submitted">Submitted</option>
+                        <option value="Accepted">Accepted 🎉</option>
+                        <option value="Rejected">Rejected</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-uni w-100 py-2.5 rounded-pill shadow-sm">Deploy Application Track</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleCustomDegreeInput() {
+        const selectBox = document.getElementById("degreeSelect");
+        const customContainer = document.getElementById("customDegreeContainer");
+        const customInput = document.getElementById("customDegreeInput");
+
+        if (selectBox.value === "Other") {
+            customContainer.classList.remove("d-none");
+            customInput.setAttribute("required", "required");
+            customInput.focus();
+        } else {
+            customContainer.classList.add("d-none");
+            customInput.removeAttribute("required");
+        }
+    }
+</script>
+{% endblock %}

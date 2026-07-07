@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+{% block main %}
+<div class="row justify-content-center fade-in-up">
+    <div class="col-md-5">
+        <div class="card border-0 shadow-sm p-5 bg-white rounded-4">
+            <h3 class="fw-bold text-dark mb-1">Log Standardized Metric</h3>
+            <p class="text-muted small mb-4">Integrate performance thresholds against localized criteria pathways.</p>
+            <hr class="mb-4">
+
+            <form action="/add-test" method="post">
+                <div class="mb-3">
+                    <label class="form-label fw-semibold small text-uppercase text-secondary">Testing Standard</label>
+                    <select id="testTypeDropdown" name=\"test_type\" class="form-select px-3 py-2.5 rounded-3" onchange="toggleCustomTestView()" required>
+                        <option value="" disabled selected>Select baseline model...</option>
+                        <option value="SAT">SAT Reasoning</option>
+                        <option value="ACT">ACT Metric</option>
+                        <option value="IELTS">IELTS Academic</option>
+                        <option value="TOEFL">TOEFL iBT</option>
+                        <option value="Other">Other Classification</option>
+                    </select>
+                </div>
+
+                <div id="customTestWrapper" class="mb-3 d-none animate-slide">
+                    <label class="form-label fw-semibold small text-uppercase text-secondary">Specify Core Classification Title</label>
+                    <input type="text" id="customTestInput" name="custom_test_type" class="form-control px-3 py-2.5 rounded-3" placeholder="e.g., AP Calculus BC">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold small text-uppercase text-secondary">Target Strategic Goal</label>
+                    <input type="number" name="target" class="form-control px-3 py-2.5 rounded-3" step="0.1" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold small text-uppercase text-secondary">Current Baseline Score (Optional)</label>
+                    <input type="number" name="current" class="form-control px-3 py-2.5 rounded-3" step="0.1">
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-semibold small text-uppercase text-secondary">Official Execution Date</label>
+                    <input type="date" name="test_date" class="form-control px-3 py-2.5 rounded-3">
+                </div>
+
+                <button type="submit" class="btn btn-uni w-100 py-3 rounded-3 shadow-sm">Save Testing Vector</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleCustomTestView() {
+        const selectElement = document.getElementById("testTypeDropdown");
+        const customContainer = document.getElementById("customTestWrapper");
+        const customInput = document.getElementById("customTestInput");
+
+        if (selectElement.value === "Other") {
+            customContainer.classList.remove("d-none");
+            customInput.setAttribute("required", "required");
+            customInput.focus();
+        } else {
+            customContainer.classList.add("d-none");
+            customInput.removeAttribute("required");
+        }
+    }
+</script>
+{% endblock %}

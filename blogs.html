@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block main %}
+<div class="row mb-5">
+    <div class="col-12">
+        <div class="bg-uni-gradient text-white p-5 rounded-4 shadow-sm">
+            <h1 class="fw-bold">Admissions Insights</h1>
+            <p class="mb-0 opacity-75">Expert strategies and guides for your international application journey.</p>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    {% for post in posts %}
+    <div class="col-md-6 mb-4">
+        <div class="card h-100 p-4 border-0 shadow-sm rounded-4 bg-white">
+            <div class="d-flex justify-content-between mb-3">
+                <span class="badge bg-purple-light text-dark rounded-pill">{{ post.tag }}</span>
+                <span class="text-muted small">{{ post.reading_time }} min read</span>
+            </div>
+
+            <h4 class="fw-bold text-dark">{{ post.title }}</h4>
+
+            <div class="text-muted my-3 overflow-hidden" style="max-height: 150px;">
+                {{ post.content | safe }}
+            </div>
+
+            <div class="mt-auto pt-3">
+                {% if session.get("user_id") %}
+                <a href="/edit-blog?id={{ post.id }}" class="btn btn-sm btn-outline-uni rounded-pill">Edit Article</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

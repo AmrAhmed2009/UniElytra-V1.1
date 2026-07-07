@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+
+{% block main %}
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
+<div class="container mt-5 fade-in-up">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 rounded-4 p-5 bg-white">
+                <h2 class="fw-bold mb-4">{% if post %}Edit Article{% else %}Create New Article{% endif %}</h2>
+
+                <form action="/edit-blog" method="post" id="blogForm">
+                    {% if post %}<input type="hidden" name="blog_id" value="{{ post.id }}">{% endif %}
+
+                    <div class="mb-3">
+                        <label class="fw-semibold">Title</label>
+                        <input type="text" name="title" class="form-control rounded-pill" value="{{ post.title if post else '' }}" required>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="fw-semibold">Tag</label>
+                            <input type="text" name="tag" class="form-control rounded-pill" value="{{ post.tag if post else '' }}" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="fw-semibold">Reading Time (minutes)</label>
+                            <input type="number" name="reading_time" class="form-control rounded-pill" value="{{ post.reading_time if post else '' }}" required>
+                        </div>
+                    </div>
+
+                    <label class="fw-semibold mb-2">Article Content</label>
+                    <div id="editor" style="height: 300px;" class="rounded-3 border">
+                        {{ post.content | safe if post else '' }}
+                    </div>
+
+                    <input type="hidden" name="content" id="hiddenContent">
+
+                    <button type="submit" class="btn btn-uni mt-4 px-4 rounded-pill">Save Article</button>
+                    <a href="/blogs" class="btn btn-outline-secondary mt-4 px-4 rounded-pill">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+<script>
+    var quill = new Quill('#editor', {
+        theme: 'snow',
+        modules: {
+            toolbar: [
+                [{ header: [1, 2, false] }],
+                ['bold', 'italic', 'underline', 'strike'],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                ['link', 'image'],
+                [{ 'color': [] }, { 'background': [] }],
+                ['clean']
+            ]
+        }
+    });
+
+    // Sync content before submitting
+    document.querySelector('#blogForm').onsubmit = function() {
+        document.querySelector('#hiddenContent').value = quill.root.innerHTML;
+    };
+</script>
+{% endblock %}

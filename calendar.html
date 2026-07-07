@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+
+{% block main %}
+<div class="row mb-4 fade-in-up">
+    <div class="col-md-12">
+        <div class="bg-uni-gradient text-white p-5 rounded-4 shadow-sm">
+            <h1 class="fw-bold display-6">Application Calendar</h1>
+            <p class="mb-0 opacity-75">Track your upcoming college and scholarship deadlines in order of priority.</p>
+        </div>
+    </div>
+</div>
+
+<div class="row fade-in-up">
+    <div class="col-md-12">
+        <div class="card p-4 bg-white">
+            <h4 class="fw-bold text-dark mb-4">📅 Deadline Schedule</h4>
+
+            {% if apps %}
+                <div class="position-relative ps-4 border-start border-2" style="border-color: var(--uni-purple) !important;">
+                    {% for app in apps %}
+                        <div class="mb-4 position-relative">
+                            <div class="position-absolute rounded-circle bg-white border border-4"
+                                 style="width: 18px; height: 18px; left: -34px; top: 4px; border-color: var(--uni-purple) !important;">
+                            </div>
+
+                            <div class="card p-3 bg-light border-0 card-hover-engage">
+                                <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+                                    <div>
+                                        <h5 class="fw-bold text-dark mb-1">{{ app.institution }}</h5>
+                                        <p class="small text-muted mb-0">
+                                            Program: <strong>{{ app.program }}</strong>
+                                            {% if app.scholarship_name %}
+                                                | Track: <span class="text-dark fw-semibold">{{ app.scholarship_name }}</span>
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between justify-content-md-end gap-4">
+                                        <div>
+                                            {% if app.status == 'Accepted' %}
+                                                <span class="badge badge-accepted rounded-pill px-3 py-1.5 small fw-bold">Accepted 🎉</span>
+                                            {% elif app.status == 'Submitted' %}
+                                                <span class="badge badge-submitted rounded-pill px-3 py-1.5 small fw-bold">Submitted</span>
+                                            {% elif app.status == 'Rejected' %}
+                                                <span class="badge badge-rejected rounded-pill px-3 py-1.5 small fw-bold">Rejected</span>
+                                            {% else %}
+                                                <span class="badge badge-pending rounded-pill px-3 py-1.5 small fw-bold">In Progress</span>
+                                            {% endif %}
+                                        </div>
+                                        <div class="text-md-end">
+                                            <span class="d-block fw-bold text-uppercase text-muted" style="font-size: 10px; letter-spacing: 0.5px;">Due Date</span>
+                                            <span class="badge bg-white text-dark border border-2 fw-bold px-3 py-1.5 mt-1" style="border-color: var(--uni-border) !important;">
+                                                {{ app.deadline }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="text-center py-5 my-3">
+                    <div class="display-4 text-muted mb-3">📅</div>
+                    <h5 class="fw-bold text-dark">Your Calendar is Empty</h5>
+                    <p class="text-muted small mb-4">You haven't added any university application targets yet. Add an application to see your timeline build automatically.</p>
+                    <a href="/add-application" class="btn btn-uni btn-sm px-4 py-2">+ Add Your First Application</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

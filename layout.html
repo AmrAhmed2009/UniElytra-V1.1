@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniElytra: University Admissions Tracker</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --uni-purple: #4A2E80;
+            --uni-purple-hover: #371F63;
+            --uni-purple-light: #F3F0FC;
+            --uni-black: #1A1A1A;
+            --uni-muted: #666666;
+            --uni-border: #EAEAEA;
+        }
+
+        body {
+            background-color: #FAFAFA;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            color: var(--uni-black);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            flex: 1;
+        }
+
+        /* Fully Curved Buttons Framework */
+        .btn-uni {
+            background-color: var(--uni-purple);
+            color: #ffffff;
+            font-weight: 600;
+            border: 1px solid var(--uni-purple);
+            border-radius: 50rem !important; /* Forces perfect curves */
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-uni:hover {
+            background-color: var(--uni-purple-hover);
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(74, 46, 128, 0.25);
+        }
+
+        .btn-outline-uni {
+            color: var(--uni-purple);
+            border: 2px solid var(--uni-purple);
+            font-weight: 600;
+            background-color: transparent;
+            border-radius: 50rem !important;
+            transition: all 0.25s ease;
+        }
+        .btn-outline-uni:hover {
+            background-color: var(--uni-purple);
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        .btn-rounded {
+            border-radius: 50rem !important;
+        }
+
+        /* Clean Cards & Layout Elements */
+        .card {
+            border: 1px solid var(--uni-border);
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.01);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-hover-engage:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(74, 46, 128, 0.08);
+        }
+        .border-purple-accent {
+            border-left: 4px solid var(--uni-purple) !important;
+        }
+        .bg-uni-gradient {
+            background: linear-gradient(135deg, var(--uni-purple) 0%, #1A0D33 100%);
+        }
+        .bg-purple-light {
+            background-color: var(--uni-purple-light);
+            color: var(--uni-purple);
+        }
+
+        /* Animation Keyframes */
+        .fade-in-up {
+            animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Strict Theme Status Badges */
+        .badge-accepted { background-color: var(--uni-purple); color: #ffffff; }
+        .badge-submitted { background-color: #765BB0; color: #ffffff; }
+        .badge-rejected { background-color: var(--uni-black); color: #ffffff; }
+        .badge-pending { background-color: var(--uni-purple-light); color: var(--uni-purple); border: 1px solid var(--uni-purple); }
+
+        /* Mobile Navbar Toggler Styling */
+        .navbar-toggler {
+            border: none;
+            padding: 0.5rem;
+        }
+        .navbar-toggler:focus {
+            box-shadow: 0 0 0 3px var(--uni-purple-light);
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom mb-4 py-3 shadow-sm">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 100" width="190" height="45">
+                    <defs>
+                        <linearGradient id="elytraGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#6A45B8" />
+                            <stop offset="100%" stop-color="#321E56" />
+                        </linearGradient>
+                        <linearGradient id="purpleLightGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#A78BFA" />
+                            <stop offset="100%" stop-color="#6A45B8" />
+                        </linearGradient>
+                    </defs>
+                    <g transform="translate(5, -5)">
+                        <path d="M 65 50 C 35 20 15 40 25 75 C 32 95 55 70 65 55 Z" fill="url(#elytraGrad)" />
+                        <path d="M 65 50 C 95 20 115 40 105 75 C 98 95 75 70 65 55 Z" fill="url(#elytraGrad)" />
+                        <polygon points="65,32 83,40 65,48 47,40" fill="url(#purpleLightGrad)" />
+                        <path d="M 53 42 L 53 49 C 53 54 77 54 77 49 L 77 42" fill="#321E56" />
+                        <path d="M 65 40 Q 78 42 79 56" fill="none" stroke="#FFFFFF" stroke-width="1.5" />
+                    </g>
+                    <text x="135" y="58" font-family="'Segoe UI', sans-serif" font-weight="800" font-size="38" fill="#1A1A1A">
+                        Uni<tspan fill="#6A45B8">Elytra</tspan>
+                    </text>
+                    <text x="137" y="78" font-family="'Segoe UI', sans-serif" font-weight="600" font-size="11" fill="#666666" letter-spacing="2">
+                        ADMISSIONS TRACKER
+                    </text>
+                </svg>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#uniNavbar" aria-controls="uniNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="uniNavbar">
+                <div class="navbar-nav ms-auto align-items-lg-center d-flex flex-column flex-lg-row mt-3 mt-lg-0">
+                    <a href="/blogs" class="nav-link text-secondary mx-2 fw-semibold">Blogs</a>
+
+                    {% if session["user_id"] %}
+                        <a href="/" class="nav-link text-secondary mx-2 fw-semibold">Dashboard</a>
+                        <a href="/calendar" class="nav-link text-secondary mx-2 fw-semibold me-3">Calendar</a>
+
+                        <div class="d-flex flex-wrap gap-2 mt-2 mt-lg-0">
+                            <a href="/add-application" class="btn btn-uni btn-sm px-4">+ Add Application</a>
+                            <a href="/add-test" class="btn btn-outline-uni btn-sm px-4">+ Add Test Score</a>
+                            <a href="/logout" class="btn btn-light btn-sm text-dark btn-rounded px-3 border">Log Out</a>
+                        </div>
+                    {% else %}
+                        <div class="d-flex gap-2 mt-2 mt-lg-0">
+                            <a href="/login" class="btn btn-link text-decoration-none text-secondary fw-semibold">Log In</a>
+                            <a href="/register" class="btn btn-uni btn-sm px-4">Get Started</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert bg-white border-start border-4 shadow-sm alert-dismissible fade show fade-in-up" role="alert" style="border-left-color: var(--uni-purple) !important;">
+                        ✨ {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <main class="py-2">
+            {% block main %}{% endblock %}
+        </main>
+    </div>
+
+    <footer class="bg-white border-top mt-5 py-5 text-secondary">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-7 mb-4 mb-md-0">
+                    <h5 class="fw-bold text-dark mb-2">Who We Are & Our Mission</h5>
+                    <p class="small text-muted text-justify mb-0">
+                        UniElytra was built by <strong>Amr Ahmed Fawzi</strong> to help students around the world track international university applications and standardized test scores easily. Our goal is to make applying for colleges and scholarships simple, clear, and fully organized.
+                    </p>
+                </div>
+                <div class="col-md-5 text-md-end">
+                    <h6 class="fw-bold text-dark mb-2">Questions or Suggestions?</h6>
+                    <a href="mailto:amr.fawzi.professional@gmail.com" class="btn btn-uni btn-sm px-4 py-2">
+                        📩 Email Amr Ahmed Fawzi
+                    </a>
+                    <div class="mt-2 small text-muted font-monospace" style="font-size: 11px;">amr.fawzi.professional@gmail.com</div>
+                </div>
+            </div>
+            <div class="border-top mt-4 pt-3 text-center text-muted" style="font-size: 12px;">
+                &copy; 2026 UniElytra. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
