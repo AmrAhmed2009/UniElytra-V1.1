@@ -16,7 +16,7 @@ Session(app)
 db = SQL("sqlite:///tracker.db")
 
 # Admin configuration
-ADMIN_USER = "AmrAhmed2009"
+ADMIN_USER = "#####"
 
 # In-memory blog store
 BLOGS = [
